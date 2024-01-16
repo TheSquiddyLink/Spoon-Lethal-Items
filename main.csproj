@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Company>Test</Company>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--you need to change both of these to your path, if you are working with multiple people, you can copy paste line 19 here and include their directories as well, or use a different system entirely.-->
+    <LethalCompanyDir Condition="Exists('C:\Users\$(UserName)\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\mod pack')">C:\Users\$(UserName)\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\mod pack</LethalCompanyDir>
+    
+    
+    <BepinexDir>$(LethalCompanyDir)\BepInEx\</BepinexDir>
+    <PluginsDir>$(BepinexDir)plugins\</PluginsDir>
+    <!--Replace "LethalEmotesApi" with the folder name that contains "LethalEmotesAPI.dll"-->
+    <LethalLibDirectory>$(PluginsDir)Evaisa-LethalLib\LethalLib\</LethalLibDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="libs\**" />
+    <EmbeddedResource Remove="libs\**" />
+    <None Remove="libs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="LethalLib">
+      <HintPath>$(LethalLibDirectory)LethalLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AssemblyCSharp">
+      <HintPath>Assembly-CSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <OutputFiles Include="$(TargetPath);$(TargetDir)$(TargetName).pdb" InProject="false" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="@(OutputFiles)" DestinationFolder="$(PluginsDir)SPOON"/>
+  </Target>
+
+</Project>

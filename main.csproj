@@ -21,7 +21,7 @@
     
     <BepinexDir>$(LethalCompanyDir)\BepInEx\</BepinexDir>
     <PluginsDir>$(BepinexDir)plugins\</PluginsDir>
-    <!--Replace "LethalEmotesApi" with the folder name that contains "LethalEmotesAPI.dll"-->
+    
     <LethalLibDirectory>$(PluginsDir)Evaisa-LethalLib\LethalLib\</LethalLibDirectory>
   </PropertyGroup>
 

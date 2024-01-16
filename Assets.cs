@@ -37,9 +37,9 @@ namespace bigManItem
             node.clearPreviousText = true;
             node.displayText = "This info is about Big Man";
             node.maxCharactersToType = 35;
-            
+
             assetBundle = bundle.LoadAsset<Item>("Assets/BigManItem.asset");
-            Items.RegisterShopItem(assetBundle, buyNode1, buyNode2, node, 0);
+            Items.RegisterShopItem(assetBundle, null, null, node, 0);
 
 
 

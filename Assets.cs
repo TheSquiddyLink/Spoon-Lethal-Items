@@ -7,6 +7,7 @@ using System.Reflection;
 using UnityEngine;
 
 
+using System.Collections.Generic;
 
 namespace bigManItem
 {
@@ -14,9 +15,27 @@ namespace bigManItem
 
     public class Plugin : BaseUnityPlugin
     {
-        const string GUID = "squibs.bigMan";
-        const string NAME = "Big Man Item";
+        const string GUID = "squibs.spoon";
+        const string NAME = "Splatoon Scrap";
         const string VERSION = "0.0.1";
+
+        List<Dictionary<string, string>> allAssets = new List<Dictionary<string, string>> 
+        {
+            new Dictionary<string, string> 
+            {
+                {"name", "BigMan"}, 
+                {"location", "Assets/BigManItem.asset"},
+                {"nodeName", $"BigManInfoNode"},
+                {"nodeDisplay", "This info is about Big Man"}
+            },
+            new Dictionary<string, string> 
+            {
+                {"name", "SmallFry"},
+                {"location", "Assets/Little Buddy/SmallFryItem.asset"},
+                {"nodeName", $"SmallFryInfoNode"},
+                {"nodeDisplay", "This info is about Small Fry"}
+            }
+        };
 
         public static Plugin instance;
         void Awake()
@@ -25,24 +44,25 @@ namespace bigManItem
 
             string assetDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "itemmod");
             AssetBundle bundle = AssetBundle.LoadFromFile(assetDir);
+            
+            foreach(var asset in  allAssets)
+            {
+                Logger.LogInfo($"Registering {asset["name"]}");
+                Item assetBundle = bundle.LoadAsset<Item>(asset["location"]);
+                
+                NetworkPrefabs.RegisterNetworkPrefab(assetBundle.spawnPrefab);
+                Utilities.FixMixerGroups(assetBundle.spawnPrefab);
+                Items.RegisterScrap(assetBundle, 1000, Levels.LevelTypes.All);
 
-            Item assetBundle = bundle.LoadAsset<Item>("Assets/BigManItem.asset");
+                TerminalNode node = ScriptableObject.CreateInstance<TerminalNode>();
+                node.name = asset["nodeName"];
+                node.clearPreviousText = true;
+                node.displayText = asset["nodeDisplay"];
+                node.maxCharactersToType = 35;
 
+                Items.RegisterShopItem(assetBundle, null, null, node, 0);
 
-            NetworkPrefabs.RegisterNetworkPrefab(assetBundle.spawnPrefab);
-            Utilities.FixMixerGroups(assetBundle.spawnPrefab);
-
-            TerminalNode node = ScriptableObject.CreateInstance<TerminalNode>();
-            node.name = $"BigManInfoNode";
-            node.clearPreviousText = true;
-            node.displayText = "This info is about Big Man";
-            node.maxCharactersToType = 35;
-
-            assetBundle = bundle.LoadAsset<Item>("Assets/BigManItem.asset");
-            Items.RegisterShopItem(assetBundle, null, null, node, 0);
-
-
-
+            }
         }
     }
 }

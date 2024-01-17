@@ -34,6 +34,13 @@ namespace bigManItem
                 {"location", "Assets/Little Buddy/SmallFryItem.asset"},
                 {"nodeName", $"SmallFryInfoNode"},
                 {"nodeDisplay", "This info is about Small Fry"}
+            },
+            new Dictionary<string, string> 
+            {
+                {"name", "GoldenEgg"},
+                {"location", "Assets/GoldenEgg/GoldenEggItem.asset"},
+                {"nodeName", $"GoldenEggInfoNode"},
+                {"nodeDisplay", "This info is about Golden Egg"}
             }
         };
 

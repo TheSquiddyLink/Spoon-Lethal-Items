@@ -1,1 +1,1 @@
-# salmon-loot
+# Lethal Company Spoon Items
